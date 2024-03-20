@@ -1,5 +1,4 @@
 import random
-import gc
 
 
 class BoardException(Exception):
