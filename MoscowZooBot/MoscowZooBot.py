@@ -37,7 +37,7 @@ def start(message: telebot.types.Message):
     if check == 0:
         alter_result_quize(chat_id, f"{chat_id}, {'---'}")  # Записываем user в базу данных с результатом викторины '---'
         bot.send_video(message.chat.id, file_logo, None, 'Text')
-        text = (f'Привет *{first_name}*! Добро пожаловать в наш телеграмм-бот! \n\n{intro}')
+        text = (f'✋ Привет *{first_name}*! Добро пожаловать в наш телеграмм-бот! \n\n{intro}')
     else:
         text = ('Выберите нужный пункт меню 👇')
     bot.send_message(chat_id, text, parse_mode='Markdown', reply_markup=markup)
@@ -45,7 +45,7 @@ def start(message: telebot.types.Message):
 @bot.message_handler(commands=['stop'])
 def stop(message): #Функция которая происходит по команде /stop
     global check
-    bot.send_message(message.chat.id,'Бот остановлен. Для запуска бота введите команду /start',
+    bot.send_message(message.chat.id,'📵 Бот остановлен. Для запуска бота введите команду /start',
                      reply_markup=types.ReplyKeyboardRemove())
     check = 0
 
@@ -59,7 +59,7 @@ def quize(message: telebot.types.Message):
 
     elif message.text == '📒 По году рождения':
         mesg = bot.send_message(message.chat.id, f'{intro_zoroastri}\n\nВведите год вашего рождения \n\n\
-Например: 1978', parse_mode='Markdown')
+👉 *Например: 1978*', parse_mode='Markdown')
         bot.register_next_step_handler(mesg, totem_year)
 
     elif message.text == '🗓️ По дате рождения':
@@ -77,7 +77,7 @@ def quize(message: telebot.types.Message):
                       types.InlineKeyboardButton('10 сентября - 09 октября', callback_data='bd10'),
                       types.InlineKeyboardButton('10 октября - 09 ноября', callback_data='bd11'),
                       types.InlineKeyboardButton('10 ноября - 09 декабря', callback_data='bd12'))
-        question_text = f"Выберите диапазон вашего дня рождения."
+        question_text = f"🤖 Выберите диапазон вашего дня рождения."
         bot.send_message(chat_id, question_text, reply_markup=inline_db)
 
     elif message.text == 'Программа «Возьми животное под опеку»':
@@ -86,15 +86,15 @@ def quize(message: telebot.types.Message):
         inline_site = types.InlineKeyboardButton('▶️ Наш сайт', url='https://moscowzoo.ru')
         inline_vk = types.InlineKeyboardButton('▶️ Мы в Telegram', url='https://t.me/Moscowzoo_official')
         inline_tg = types.InlineKeyboardButton('▶️ Мы в VK', url='https://vk.com/moscow_zoo')
-        inline_feedback = types.InlineKeyboardButton('▶️ Оставьте ваш отзыв ', callback_data='feedback')
+        inline_feedback = types.InlineKeyboardButton('✍️ Оставьте ваш отзыв', callback_data='feedback')
         inline_markup.add(inline_prog, inline_site, inline_tg, inline_vk, inline_feedback)
         bot.send_message(message.chat.id, f'{about_prog}', parse_mode='Markdown', reply_markup=inline_markup)
 
     elif message.text == 'stop' or message.text =='Stop' or message.text == 'стоп' or message.text =='Стоп':
-        bot.send_message(message.chat.id, 'Если вы хотите остановить бот, введите команду /stop')
+        bot.send_message(message.chat.id, '☝️ Если вы хотите остановить бот, введите команду /stop')
 
     else:
-        bot.send_message(message.chat.id, 'Моя твоя не понимать!', parse_mode='Markdown')
+        bot.send_message(message.chat.id, 'Моя твоя не понимать! 🤷‍♀️', parse_mode='Markdown')
         check = 1
         start(message)
 def totem_year(message):
@@ -107,7 +107,7 @@ def totem_year(message):
         data = int(message.text)
         if abs(data) < 1906:
             now_year = str(datetime.datetime.now())[:4]
-            text = f'Вы мстите государству за пенсионную реформу или вам действительно {int(now_year)-data}?'
+            text = f'😜 Вы мстите государству за пенсионную реформу или вам действительно {int(now_year)-data}?'
             bot.send_message(chat_id, text)
 
         else:
@@ -121,7 +121,7 @@ def totem_year(message):
                         break
                 data -= 32
     else:
-        text = f'Возможно, в каком-то летоисчислении это и является годом, но только не в земном.\n\n Напишите цифрами.'
+        text = f'Возможно, в каком-то летоисчислении это и является годом, но только не в земном.\n\n Напишите цифрами. 🔢'
         bot.send_message(chat_id, text)
 
     start(message)
@@ -142,10 +142,10 @@ def already_passed(chat_id: str):
          for i in quize_result.keys():
             if quize_result[i][0][0] <= int(last_result) <= quize_result[i][0][1]:
                 menu_quiz = types.InlineKeyboardMarkup(row_width=2)
-                button_yes = types.InlineKeyboardButton('Да', callback_data='yes')
-                button_no = types.InlineKeyboardButton('Нет', callback_data='no')
+                button_yes = types.InlineKeyboardButton('✅ Да', callback_data='yes')
+                button_no = types.InlineKeyboardButton('❌ Нет', callback_data='no')
                 menu_quiz.add(button_yes, button_no)
-                text = f'Вы уже проходили викторину! \n{quize_result[i][1]} \n\n *Хотите пройти викторину еще раз?*'
+                text = f'Вы уже проходили викторину! \n🐯 {quize_result[i][1]} \n\n 👉 *Хотите пройти викторину еще раз?*'
                 bot.send_message(chat_id, text, parse_mode='Markdown', reply_markup=menu_quiz)
     else:
         user_data[chat_id] = {'current_question': 1, 'score': 0}  # Начинаем с первого вопроса и 0 баллов
@@ -211,7 +211,7 @@ def callback_data(call):
             send_vk_to_wall(photo_path, caption)
 
         if call.data == 'in_m':
-            mesg = bot.send_message(chat_id, 'Ваш электронный адрес')
+            mesg = bot.send_message(chat_id, '📧 Ваш электронный адрес')
             bot.register_next_step_handler(mesg, send_email)
 
         if call.data == 'feedback':
@@ -224,11 +224,11 @@ def callback_data(call):
 def send_msg_date_of_birth(chat_id: str, dict_key: str):
     '''Отправка фото с текстом. Меню "По дате рождения'''
     inline_send = types.InlineKeyboardMarkup(row_width=True)
-    inline_send.add(types.InlineKeyboardButton('Отправить на почту Московского зоопарка', callback_data='in_m'),
-                             types.InlineKeyboardButton('Отправить в ВК', callback_data='in_VK'))
+    inline_send.add(types.InlineKeyboardButton('📩 Отправить на почту Московского зоопарка', callback_data='in_m'),
+                             types.InlineKeyboardButton('💻 Отправить в ВК', callback_data='in_VK'))
     global photo_path, caption
     photo_path = f'animals/{dict_date_of_birth[dict_key][1]}'
-    caption = f"{dict_date_of_birth[dict_key][0]}"
+    caption = f"👉 {dict_date_of_birth[dict_key][0]}"
     chat_id = chat_id
     with open(photo_path, 'rb') as photo:
         bot.send_photo(chat_id, photo, caption=caption, parse_mode="Markdown", reply_markup=inline_send)
@@ -254,7 +254,7 @@ def handle_query(call):
                 if quize_result[i][0][0] < user_info['score'] < quize_result[i][0][1]:
 
                     with open(f'animals/{quize_result[i][2]}', 'rb') as photo:
-                        bot.send_photo(chat_id, photo, caption=f"Викторина окончена! \n{quize_result[i][1]}", parse_mode="Markdown")
+                        bot.send_photo(chat_id, photo, caption=f"Викторина окончена❗ \n{quize_result[i][1]}", parse_mode="Markdown")
 
                 # поиск в базе результатов ID. Делаем новую запись или обновляем старый результат.
                 alter_result_quize(chat_id, f"{chat_id},{user_info['score']}")
@@ -304,9 +304,10 @@ def send_email(message):
             server.login(from_email, passw_external_app)
             server.send_message(msg)
 
-        bot.send_message(message.chat.id,'Сообщение отправлено на почту Московского зоопарка zoofriends@moscowzoo.ru')
+        bot.send_message(message.chat.id,'📨 Сообщение отправлено на почту Московского зоопарка zoofriends@moscowzoo.ru')
     except Exception as e:
-        bot.send_message(message.chat.id,'Произошла ошибка при отправке сообщения. Повторите попытку')
+        print(e)
+        bot.send_message(message.chat.id,'⛔ Произошла ошибка при отправке сообщения. Повторите попытку')
 
 
 def send_vk_to_wall(photo_path, caption):
